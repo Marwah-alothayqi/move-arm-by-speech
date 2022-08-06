@@ -38,5 +38,19 @@ A serial port is a bidirectional communication interface that allows sending and
 ```
 this part is responsible for make a connection to the serial port and determine the desired baud rate will open the serial port. The baudRate dictionary member specifies how fast data is sent over a serial line. It is expressed in units of bits-per-second (bps). Check your device's documentation for the correct value as all the data you send and receive will be gibberish if this is specified incorrectly,
 and allow to read and write to and from the serial port.
+```
+//to check the specific words
 
+			var textomove = document.getElementById("TE").innerHTML = transcript;
+			
+			if ( textomove=="يمين") {
+                    console.log(textomove)
+                    sendSerialR(); //go to the method
+
+                }else if(textomove == "يسار") {
+                    console.log(textomove)
+                    sendSerialL();//go to the method
+
+                }
+```
 
