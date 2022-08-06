@@ -7,7 +7,7 @@ user say to the webpage right or left this is basically done by Web Serial API.
 ## Web Serial API:
 A serial port is a bidirectional communication interface that allows sending and receiving data byte by byte which mean it's provides a way for websites to read from and write to a serial device with JavaScript. Serial devices are connected either through a serial port on the user's system or through removable USB and Bluetooth devices that emulate a serial port.
 
-## The important parts of the code :
+## The important parts of javascript code :
 ```// Prompt user to select any serial port.
             const port = await navigator.serial.requestPort();
 			// Wait for the serial port to open.
@@ -34,6 +34,9 @@ A serial port is a bidirectional communication interface that allows sending and
                 }
               // value is a string.
                 console.log(value);
-            }```
+            }
+	    
+this part is responsible for make a connection to the serial port and determine the desired baud rate will open the serial port. The baudRate dictionary member specifies how fast data is sent over a serial line. It is expressed in units of bits-per-second (bps). Check your device's documentation for the correct value as all the data you send and receive will be gibberish if this is specified incorrectly,
+and allow to read and write to and from the serial port.
 
 
