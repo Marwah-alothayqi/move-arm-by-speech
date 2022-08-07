@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>الصوت إالى نص</title>
+
+<Style>
+/* CSS for the page*/
+body{
+	font-family: arial;
+	font-size: 16px;
+	margin: 0;
+	background:lightblue;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.covertor{
+  width: 600px;
+  text-align: center;
+
+  }
+
+h1{
+	color: black;
+	font-size: 50px;
+      text-align: center
+}
+h2{
+	color: grey;
+	font-size: 30px;
+      text-align: center
+}
+
+ button{
+  padding: 12px 20px;
+  background:white;
+  border: 0;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;}
+
+#connect{
+  padding: 12px 20px;
+  background:white;
+  border: 0;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;}
+
+#TE{
+   width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  resize: none;
+  padding: 20px;
+  font-size: 20px;
+  margin-top: 16px;
+  color:black;
+}
+
+ 
+</Style>
+</head>
+
+
+<body>
+          <div class="covertor">
+          <h1>تحويل الصوت الى نص </h1>
+          <h2> اضغط الزر وابدأ بالتحدث</h2>
+		  <button id="connect" >اتصال</button>
+          <button id="click_to_record">ابدأ بالتحدث</button>
+          <textarea name=""id="TE"></textarea>
+	     </div>
+
+	<script>
+            /* JS start here */
+			
+			
+			
+			document.querySelector('button').addEventListener('click', async () => {
+            // Prompt user to select any serial port.
+            const port = await navigator.serial.requestPort();
+			// Wait for the serial port to open.
+            await port.open({ baudRate: 9600 }); 
+			//the end
+			
+			//Write to a serial port 
+			textEncoder = new TextEncoderStream();
+            writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+            writer = textEncoder.writable.getWriter();
+			//the end
+		
+		    //Read from a serial port
+	        const textDecoder = new TextDecoderStream();
+            const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+            const reader = textDecoder.readable.getReader();
+            // Listen to data coming from the serial device.
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) {
+                 // Allow the serial port to be closed later.
+                 reader.releaseLock();
+                break;
+                }
+              // value is a string.
+                console.log(value);
+            }
+			});
+			
+	     //for convert audio to text 
+        click_to_record.addEventListener('click',function(){
+		var speech = true;
+		window.SpeechRecognition = window.SpeechRecognition
+						|| window.webkitSpeechRecognition;
+
+		const recognition = new SpeechRecognition();
+		recognition.interimResults = true;
+		const covertor = document.querySelector('.covertor');
+		covertor.appendChild(TE);
+            recognition.lang='ar';
+
+		recognition.addEventListener('result', e => {
+			const transcript = Array.from(e.results)
+				.map(result => result[0])
+				.map(result => result.transcript)
+				.join('')
+			//to check the specific words
+
+			var textomove = document.getElementById("TE").innerHTML = transcript;
+			
+			if ( textomove=="يمين") {
+                    console.log(textomove)
+                    sendSerialR(); //go to the method
+
+                }else if(textomove == "يسار") {
+                    console.log(textomove)
+                    sendSerialL();//go to the method
+
+                }
+                  
+		});
+		  recognition.start();
+		});
+			
+           async function sendSerialR() {
+            dataToSend = 'R'
+            dataToSend = dataToSend + "\r\n";
+
+            await writer.write(dataToSend);
+        }
+        async function sendSerialL() {
+            dataToSend = 'L'
+            dataToSend = dataToSend + "\r\n";
+            await writer.write(dataToSend);
+        }
+
+           
+
+
+
+
+
+
+
+	</script>
+</body>
+
+</html>
