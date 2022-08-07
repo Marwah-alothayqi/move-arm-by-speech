@@ -56,6 +56,31 @@ and allow to read and write to and from the serial port.
 ## Result
 ![Screenshot (1095)](https://user-images.githubusercontent.com/108452991/183269257-7c4eba76-0066-4d02-986d-2cf701929581.png)
 
+## The important parts of arduino code :
+```
+pos = Serial.read();
+  if (Serial.available() > 0) {
+    if (pos == 'R') {
+     myservo.write(180);
+      delay(100);
+
+    }
+    if (pos == 'L') {
+     myservo.write(0);
+      delay(100);}
+  }
+}
+```
+if(Serial.available( ) > 0) //  It will only send data when the received data is greater than 0. 
+ Serial.read( );  // It will read the incoming or arriving data byte
+it will move to 180 dgree if it read 'R'
+and 0 dgree if it read 'L'
+
+## How to try it?
+1.install arduino ide to run the servo code on it.
+2.download the html code.
+3.the components to try the code which are (arduino uno ,arm has servo motor).
+
 
 
 
